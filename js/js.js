@@ -10,7 +10,7 @@ function start() { // Start of the start() function
 	//Main game variables
 	
 	var game = {};
-	var velocity=4;
+	var velocity=5;
 	var positionY = parseInt(Math.random() * 334);
 	var keyboardKey = {
 		upArrow: 38,
@@ -42,6 +42,7 @@ function start() { // Start of the start() function
 		moveBackground();
 		movePlayer();
 		moveEnemy1();
+		moveEnemy2();
 	
 	} // End of loop() function
 
@@ -130,6 +131,18 @@ function start() { // Start of the start() function
 			
 		}
 	} // End of moveEnemy1() function
+
+		
+	function moveEnemy2() {
+		positionX = parseInt($("#enemy2").css("left"));
+		$("#enemy2").css("left",positionX-3);
+				
+		if (positionX<=0) {
+			
+		$("#enemy2").css("left",775);
+					
+		}
+	} // End of moveEnemy2() function
 	
 
 
