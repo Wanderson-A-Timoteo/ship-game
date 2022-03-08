@@ -5,6 +5,6 @@ function start() { // Start of the start() function
 	$("#game-background").append("<div id='player' class='animation1'></div>");
 	$("#game-background").append("<div id='enemy1' class='animation2'></div>");
 	$("#game-background").append("<div id='enemy2'></div>");
-	$("#game-background").append("<div id='friend'></div>");
+	$("#game-background").append("<div id='friend' class='animation3'></div>");
 
 } // End of start function
