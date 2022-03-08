@@ -26,6 +26,7 @@ body {
 #game-background {
 	width:950px;
 	height:630px;
+	margin-top: 40px;
 	background-image:url(../imgs/fundo_game.jpg);
 	border-color:#FFF;
 	border-style:solid;
@@ -158,4 +159,11 @@ background-image:url(../imgs/apache.png);
 @-o-keyframes play2 {
    from { background-position:    0px; }
      to { background-position: -528px; }
+}
+
+#shot {
+	width: 50px;
+	height: 8px;
+	position: absolute;
+	background-image: url(../imgs/disparo.png);
 }

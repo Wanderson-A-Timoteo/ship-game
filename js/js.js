@@ -10,12 +10,13 @@ function start() { // Start of the start() function
 	//Main game variables
 	
 	var game = {};
-	var velocity=5;
+	var velocity = 5;
+	var shoot = true;
 	var positionY = parseInt(Math.random() * 334);
 	var keyboardKey = {
 		upArrow: 38,
 		downArrow: 40,
-		backspace: 8
+		D: 68
 		}
 	
 		game.pressed = [];
@@ -81,9 +82,10 @@ function start() { // Start of the start() function
 			}
 		}
 		
-		if (game.pressed[keyboardKey.backspace]) {
+		if (game.pressed[keyboardKey.D]) {
 			
-			//Call trigger function
+			// Call trigger function
+			shot();
 		}
 	
 	} // End of movePlayer() function
@@ -116,10 +118,10 @@ function start() { // Start of the start() function
 
 	function moveFriend() {
 	
-		posicaoX = parseInt($("#friend").css("left"));
-		$("#friend").css("left",posicaoX+1);
+		positionX = parseInt($("#friend").css("left"));
+		$("#friend").css("left",positionX + 1);
 					
-		if (posicaoX>906) {
+		if (positionX > 906) {
 			
 			$("#friend").css("left",0);
 					
@@ -127,6 +129,40 @@ function start() { // Start of the start() function
 	
 	} // End of moveFriend() function
 	
+
+	
+	function shot() {
+		
+		if (shoot == true) {
+			
+			shoot = false;
+		
+			TOP = parseInt($("#player").css("top"))
+			positionX = parseInt($("#player").css("left"))
+			shotX = positionX  + 190;
+			topShot = TOP + 37;
+			$("#game-background").append("<div id='shot'></div");
+			$("#shot").css("top",topShot);
+			$("#shot").css("left",shotX);
+			
+			var timeshot=window.setInterval(runShot, 30);
+		
+		} // End of shoot
+	
+		function runShot() {
+			positionX  = parseInt($("#shot").css("left"));
+			$("#shot").css("left",positionX + 15); 
+
+			if (positionX > 900) {
+					
+				window.clearInterval(timeshot);
+				timeshot=null;
+				$("#shot").remove();
+				shoot=true;
+				
+			}
+		} // End of runShot() function
+	} // End of shot() function
 
 
 } // End of start function
