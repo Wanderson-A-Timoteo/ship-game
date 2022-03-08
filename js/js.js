@@ -43,6 +43,7 @@ function start() { // Start of the start() function
 		movePlayer();
 		moveEnemy1();
 		moveEnemy2();
+		moveFriend();
 	
 	} // End of loop() function
 
@@ -87,37 +88,6 @@ function start() { // Start of the start() function
 	
 	} // End of movePlayer() function
 
-	function movePlayer() {
-
-		if (game.pressed[keyboardKey.upArrow]) {
-			var topo = parseInt($("#player").css("top"));
-			$("#player").css("top",topo-10);
-	
-			if (topo<=0) {
-			
-				$("#player").css("top",topo+10);
-			}
-		
-		}
-		
-		if (game.pressed[keyboardKey.downArrow]) {
-			
-			var topo = parseInt($("#player").css("top"));
-			$("#player").css("top",topo+10);
-			
-			if (topo>=434) {	
-				$("#player").css("top",topo-10);
-					
-			}
-		}
-		
-		if (game.pressed[keyboardKey.backspace]) {
-			
-			//Call trigger function
-		}
-	
-	} // End of movePlayer() function
-
 	function moveEnemy1() {
 
 		positionX = parseInt($("#enemy1").css("left"));
@@ -126,8 +96,8 @@ function start() { // Start of the start() function
 			
 		if (positionX<=0) {
 			positionY = parseInt(Math.random() * 334);
-		$("#enemy1").css("left",694);
-		$("#enemy1").css("top",positionY);
+			$("#enemy1").css("left",694);
+			$("#enemy1").css("top",positionY);
 			
 		}
 	} // End of moveEnemy1() function
@@ -139,10 +109,23 @@ function start() { // Start of the start() function
 				
 		if (positionX<=0) {
 			
-		$("#enemy2").css("left",775);
+			$("#enemy2").css("left",775);
 					
 		}
 	} // End of moveEnemy2() function
+
+	function moveFriend() {
+	
+		posicaoX = parseInt($("#friend").css("left"));
+		$("#friend").css("left",posicaoX+1);
+					
+		if (posicaoX>906) {
+			
+			$("#friend").css("left",0);
+					
+		}
+	
+	} // End of moveFriend() function
 	
 
 
