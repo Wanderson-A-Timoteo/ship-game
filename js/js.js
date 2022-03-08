@@ -10,6 +10,8 @@ function start() { // Start of the start() function
 	//Main game variables
 	
 	var game = {};
+	var velocity=4;
+	var positionY = parseInt(Math.random() * 334);
 	var keyboardKey = {
 		upArrow: 38,
 		downArrow: 40,
@@ -37,19 +39,20 @@ function start() { // Start of the start() function
 	
 	function loop() {
 	
-	moveBackground();
-	movePlayer();
+		moveBackground();
+		movePlayer();
+		moveEnemy1();
 	
 	} // End of loop() function
 
 	
-//Function that moves the game background
-	
-function moveBackground() {
-	
-	left = parseInt($("#game-background").css("background-position"));
-	$("#game-background").css("background-position",left-1);
-	
+	//Function that moves the game background
+		
+	function moveBackground() {
+		
+		left = parseInt($("#game-background").css("background-position"));
+		$("#game-background").css("background-position",left-1);
+		
 	} // end of moveBackground() function
 
 	function movePlayer() {
@@ -81,39 +84,55 @@ function moveBackground() {
 			//Call trigger function
 		}
 	
-		} // End of movePlayer() function
+	} // End of movePlayer() function
+
+	function movePlayer() {
+
+		if (game.pressed[keyboardKey.upArrow]) {
+			var topo = parseInt($("#player").css("top"));
+			$("#player").css("top",topo-10);
+	
+			if (topo<=0) {
+			
+				$("#player").css("top",topo+10);
+			}
+		
+		}
+		
+		if (game.pressed[keyboardKey.downArrow]) {
+			
+			var topo = parseInt($("#player").css("top"));
+			$("#player").css("top",topo+10);
+			
+			if (topo>=434) {	
+				$("#player").css("top",topo-10);
+					
+			}
+		}
+		
+		if (game.pressed[keyboardKey.backspace]) {
+			
+			//Call trigger function
+		}
+	
+	} // End of movePlayer() function
+
+	function moveEnemy1() {
+
+		positionX = parseInt($("#enemy1").css("left"));
+		$("#enemy1").css("left",positionX-velocity);
+		$("#enemy1").css("top",positionY);
+			
+		if (positionX<=0) {
+			positionY = parseInt(Math.random() * 334);
+		$("#enemy1").css("left",694);
+		$("#enemy1").css("top",positionY);
+			
+		}
+	} // End of moveEnemy1() function
+	
 
 
 } // End of start function
 
 
-function movePlayer() {
-	
-	if (game.pressed[keyboardKey.upArrow]) {
-		var topo = parseInt($("#player").css("top"));
-		$("#player").css("top",topo-10);
-
-		if (topo<=0) {
-		
-			$("#player").css("top",topo+10);
-		}
-	
-	}
-	
-	if (game.pressed[keyboardKey.downArrow]) {
-		
-		var topo = parseInt($("#player").css("top"));
-		$("#player").css("top",topo+10);
-		
-		if (topo>=434) {	
-			$("#player").css("top",topo-10);
-				
-		}
-	}
-	
-	if (game.pressed[keyboardKey.backspace]) {
-		
-		//Call trigger function
-	}
-
-	} // End of movePlayer() function
