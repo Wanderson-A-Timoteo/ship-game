@@ -45,6 +45,7 @@ function start() { // Start of the start() function
 		moveEnemy1();
 		moveEnemy2();
 		moveFriend();
+		collided();
 	
 	} // End of loop() function
 
@@ -163,6 +164,45 @@ function start() { // Start of the start() function
 			}
 		} // End of runShot() function
 	} // End of shot() function
+
+	function collided() {
+		var collided1 = ($("#player").collision($("#enemy1")));
+		// collision player with enemy 1
+		if (collided1.length > 0) {
+				
+			enemy1X = parseInt($("enemy1").css("left"));
+			enemy1Y = parseInt($("enemy1").css("top"));
+			explosion1(enemy1X, enemy1Y);
+		
+			positionY = parseInt(Math.random() * 334);
+			$("enemy1").css("left", 694);
+			$("enemy1").css("top",positionY);
+
+		}
+	} // End of collided() function
+
+	
+	// Explosion 1
+	function explosion1(enemy1X, enemy1Y) {
+		$("#game-background").append("<div id='explosion1'></div");
+		$("#explosion1").css("background-image", "url(imgs/explosao.png)");
+		var div = $("#explosion1");
+		div.css("top", enemy1Y);
+		div.css("left", enemy1X);
+		div.animate({width:200, opacity:0}, "slow");
+		
+		var timeExplosion = window.setInterval(removeExplosion, 1000);
+		
+			function removeExplosion() {
+				
+				div.remove();
+				window.clearInterval(timeExplosion);
+				timeExplosion = null;
+				
+			}
+			
+		} // End of explosion1() function
+
 
 
 } // End of start function
