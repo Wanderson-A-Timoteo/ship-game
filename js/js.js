@@ -10,6 +10,7 @@ function start() { // Start of the start() function
 	//Main game variables
 	
 	var game = {};
+	var EndOfTheGame = false;
 	var velocity = 5;
 	var shoot = true;
 	var positionY = parseInt(Math.random() * 334);
@@ -130,8 +131,7 @@ function start() { // Start of the start() function
 	
 	} // End of moveFriend() function
 	
-
-	
+	// shooting function
 	function shot() {
 		
 		if (shoot == true) {
@@ -167,7 +167,10 @@ function start() { // Start of the start() function
 
 	function collided() {
 		var collided1 = ($("#player").collision($("#enemy1")));
-		// collision player with enemy 1
+		var collided2 = ($("#player").collision($("#enemy2")));
+		
+		
+		// collision player with enemy 1 helicopter
 		if (collided1.length > 0) {
 				
 			enemy1X = parseInt($("enemy1").css("left"));
@@ -177,8 +180,21 @@ function start() { // Start of the start() function
 			positionY = parseInt(Math.random() * 334);
 			$("enemy1").css("left", 694);
 			$("enemy1").css("top",positionY);
-
 		}
+		
+		// collision player with the enemy 2 truck
+		if (collided2.length > 0) {
+			
+			enemy2X = parseInt($("#enemy2").css("left"));
+			enemy2Y = parseInt($("#enemy2").css("top"));
+			explosion2(enemy2X, enemy2Y);
+					
+			$("#enemy2").remove();
+				
+			repositionEnemy2();
+				
+		}	
+
 	} // End of collided() function
 
 	
@@ -191,20 +207,58 @@ function start() { // Start of the start() function
 		div.css("left", enemy1X);
 		div.animate({width:200, opacity:0}, "slow");
 		
-		var timeExplosion = window.setInterval(removeExplosion, 1000);
+		var timeExplosion1 = window.setInterval(removeExplosion1, 1000);
 		
-			function removeExplosion() {
-				
-				div.remove();
-				window.clearInterval(timeExplosion);
-				timeExplosion = null;
-				
+		function removeExplosion1() {
+			
+			div.remove();
+			window.clearInterval(timeExplosion1);
+			timeExplosion1 = null;
+			
+		}
+		
+	} // End of explosion1() function
+
+	// Explosion 2
+	function explosion2(enemy2X, enemy2Y) {
+		$("#game-background").append("<div id='explosion2'></div");
+		$("#explosion2").css("background-image", "url(imgs/explosao.png)");
+		var div2 = $("#explosion2");
+		div2.css("top", enemy2Y);
+		div2.css("left", enemy2X);
+		div2.animate({width:200, opacity:0}, "slow");
+		
+		var timeExplosion2 = window.setInterval(removeExplosion2, 1000);
+		
+		function removeExplosion2() {
+			
+			div2.remove();
+			window.clearInterval(timeExplosion2);
+			timeExplosion2 = null;
+			
+		}
+
+	} // End of explosion2() function
+
+		
+	// Reposition Enemy 2
+	function repositionEnemy2() {
+	
+		var timeCollision4=window.setInterval(reposition4, 5000);
+			
+		function reposition4() {
+		window.clearInterval(timeCollision4);
+		timeCollision4 = null;
+			
+			if (EndOfTheGame == false) {
+			
+			$("#game-background").append("<div id=enemy2></div");
+			
 			}
 			
-		} // End of explosion1() function
-
-
-
+		}	
+	}
+	
 } // End of start function
 
 
