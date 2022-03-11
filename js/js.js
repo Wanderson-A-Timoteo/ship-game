@@ -6,6 +6,7 @@ function start() { // Start of the start() function
 	$("#game-background").append("<div id='enemy1' class='animation2'></div>");
 	$("#game-background").append("<div id='enemy2'></div>");
 	$("#game-background").append("<div id='friend' class='animation3'></div>");
+	$("#game-background").append("<div id='score'></div>");
 
 	//Main game variables
 	
@@ -13,6 +14,9 @@ function start() { // Start of the start() function
 	var EndOfTheGame = false;
 	var velocity = 5;
 	var shoot = true;
+	var points = 0;
+	var saved = 0;
+	var lost = 0;
 	var positionY = parseInt(Math.random() * 334);
 	var keyboardKey = {
 		upArrow: 38,
@@ -36,7 +40,6 @@ function start() { // Start of the start() function
 		});
 	
 	//Game Loop
-
 	game.timer = setInterval(loop,30);
 	
 	function loop() {
@@ -47,6 +50,7 @@ function start() { // Start of the start() function
 		moveEnemy2();
 		moveFriend();
 		collided();
+		score();
 	
 	} // End of loop() function
 
@@ -201,6 +205,8 @@ function start() { // Start of the start() function
 		
 		// collision shot with enemy 1 helicopter
 		if (collided3.length > 0) {
+
+			points = points + 100;
 				
 			enemy1X = parseInt($("#enemy1").css("left"));
 			enemy1Y = parseInt($("#enemy1").css("top"));
@@ -217,6 +223,8 @@ function start() { // Start of the start() function
 		
 		// collision shot with enemy 2 truck	
 		if (collided4.length>0) {
+
+			points = points + 50;
 			
 			enemy2X = parseInt($("#enemy2").css("left"));
 			enemy2Y = parseInt($("#enemy2").css("top"));
@@ -231,6 +239,8 @@ function start() { // Start of the start() function
 	
 		// collision player with friend			
 		if (collided5.length > 0) {
+
+			saved++;
 			
 			repositionFriend();
 			$("#friend").remove();
@@ -239,6 +249,8 @@ function start() { // Start of the start() function
 		
 		// collision friend with enemy 2 truck	
 		if (collided6.length > 0) {
+
+			lost++;
 				
 			friendX = parseInt($("#friend").css("left"));
 			friendY = parseInt($("#friend").css("top"));
@@ -349,7 +361,16 @@ function start() { // Start of the start() function
 			
 		}
 		
-	} // Fim da função repositionFriend()
+	} // End of repositionFriend() function
+
+	
+
+	function score() {
+		
+		$("#score").html("<h2> Points: " + points + " Saved: " + saved + " Lost: " + lost + "</h2>");
+		
+	} // End of score() function
+
 	
 } // End of start function
 
