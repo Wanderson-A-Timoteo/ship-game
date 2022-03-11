@@ -171,6 +171,7 @@ function start() { // Start of the start() function
 		var collided3 = ($("#shot").collision($("#enemy1")));
 		var collided4 = ($("#shot").collision($("#enemy2")));
 		var collided5 = ($("#player").collision($("#friend")));
+		var collided6 = ($("#enemy2").collision($("#friend")));
 		
 		
 		// collision player with enemy 1 helicopter
@@ -234,9 +235,20 @@ function start() { // Start of the start() function
 			repositionFriend();
 			$("#friend").remove();
 		}
-	
-	
 
+		
+		// collision friend with enemy 2 truck	
+		if (collided6.length > 0) {
+				
+			friendX = parseInt($("#friend").css("left"));
+			friendY = parseInt($("#friend").css("top"));
+			explosion3(friendX, friendY);
+			$("#friend").remove();
+					
+			repositionFriend();
+					
+		}
+		
 	} // End of collided() function
 
 	
@@ -281,6 +293,25 @@ function start() { // Start of the start() function
 		}
 
 	} // End of explosion2() function
+
+	
+	// Explosion 3 - friend vs enemy 2 truck
+	function explosion3(friendX, friendY) {
+		$("#game-background").append("<div id='explosion3' class='animation4'></div");
+		$("#explosion3").css("top",friendY);
+		$("#explosion3").css("left",friendX);
+
+		var timeExplosion3 = window.setInterval(resetExplosion3, 1000);
+
+		function resetExplosion3() {
+			$("#explosion3").remove();
+			window.clearInterval(timeExplosion3);
+			timeExplosion3 = null;
+				
+		}
+		
+	} // End of explosion3() function
+	
 		
 	// Reposition enemy 2 truck
 	function repositionEnemy2() {
