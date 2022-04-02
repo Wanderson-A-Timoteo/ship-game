@@ -7,12 +7,14 @@ function start() { // Start of the start() function
 	$("#game-background").append("<div id='enemy2'></div>");
 	$("#game-background").append("<div id='friend' class='animation3'></div>");
 	$("#game-background").append("<div id='score'></div>");
+	$("#game-background").append("<div id='energy'></div>");
 
 	//Main game variables
 	
 	var game = {};
 	var EndOfTheGame = false;
 	var velocity = 5;
+	var currentEnergy=3;
 	var shoot = true;
 	var points = 0;
 	var saved = 0;
@@ -24,8 +26,18 @@ function start() { // Start of the start() function
 		D: 68
 		}
 	
-		game.pressed = [];
+	game.pressed = [];
 
+	var soundShooting = document.getElementById("soundShooting");
+	var explosionSound = document.getElementById("explosionSound");
+	var music = document.getElementById("music");
+	var soundGameOver = document.getElementById("soundGameOver");
+	var lostSound = document.getElementById("lostSound");
+	var soundRescue = document.getElementById("soundRescue");
+
+	// looped music
+	music.addEventListener("ended", function(){ music.currentTime = 0; music.play(); }, false);
+	music.play();
 	
 	//Checks if the user pressed any key
 	
@@ -51,6 +63,8 @@ function start() { // Start of the start() function
 		moveFriend();
 		collided();
 		score();
+		energy();
+		
 	
 	} // End of loop() function
 
@@ -141,7 +155,8 @@ function start() { // Start of the start() function
 		if (shoot == true) {
 			
 			shoot = false;
-		
+			soundShooting.play();
+
 			TOP = parseInt($("#player").css("top"))
 			positionX = parseInt($("#player").css("left"))
 			shotX = positionX  + 190;
@@ -180,7 +195,8 @@ function start() { // Start of the start() function
 		
 		// collision player with enemy 1 helicopter
 		if (collided1.length > 0) {
-				
+			
+			currentEnergy--;
 			enemy1X = parseInt($("enemy1").css("left"));
 			enemy1Y = parseInt($("enemy1").css("top"));
 			explosion1(enemy1X, enemy1Y);
@@ -193,6 +209,7 @@ function start() { // Start of the start() function
 		// collision player with the enemy 2 truck
 		if (collided2.length > 0) {
 			
+			currentEnergy--;
 			enemy2X = parseInt($("#enemy2").css("left"));
 			enemy2Y = parseInt($("#enemy2").css("top"));
 			explosion2(enemy2X, enemy2Y);
@@ -207,7 +224,7 @@ function start() { // Start of the start() function
 		if (collided3.length > 0) {
 
 			points = points + 100;
-				
+			velocity = velocity + 0.3;	
 			enemy1X = parseInt($("#enemy1").css("left"));
 			enemy1Y = parseInt($("#enemy1").css("top"));
 				
@@ -239,9 +256,9 @@ function start() { // Start of the start() function
 	
 		// collision player with friend			
 		if (collided5.length > 0) {
-
-			saved++;
 			
+			saved++;
+			soundRescue.play();
 			repositionFriend();
 			$("#friend").remove();
 		}
@@ -266,6 +283,8 @@ function start() { // Start of the start() function
 	
 	// Explosion 1 - player helicopter vs enemy 1 helicopter
 	function explosion1(enemy1X, enemy1Y) {
+
+		explosionSound.play();
 		$("#game-background").append("<div id='explosion1'></div");
 		$("#explosion1").css("background-image", "url(imgs/explosao.png)");
 		var div = $("#explosion1");
@@ -287,6 +306,8 @@ function start() { // Start of the start() function
 
 	// Explosion 2 - player helicopter vs enemy 2 truck
 	function explosion2(enemy2X, enemy2Y) {
+
+		explosionSound.play();
 		$("#game-background").append("<div id='explosion2'></div");
 		$("#explosion2").css("background-image", "url(imgs/explosao.png)");
 		var div2 = $("#explosion2");
@@ -309,6 +330,8 @@ function start() { // Start of the start() function
 	
 	// Explosion 3 - friend vs enemy 2 truck
 	function explosion3(friendX, friendY) {
+
+		lostSound.play();
 		$("#game-background").append("<div id='explosion3' class='animation4'></div");
 		$("#explosion3").css("top",friendY);
 		$("#explosion3").css("left",friendX);
@@ -371,7 +394,71 @@ function start() { // Start of the start() function
 		
 	} // End of score() function
 
+
+		
+	// Energy bar
+
+	function energy() {
+		
+		if (currentEnergy == 3) {
+			
+			$("#energy").css("background-image", "url(imgs/energia3.png)");
+		}
+
+		if (currentEnergy == 2) {
+			
+			$("#energy").css("background-image", "url(imgs/energia2.png)");
+		}
+
+		if (currentEnergy == 1) {
+			
+			$("#energy").css("background-image", "url(imgs/energia1.png)");
+		}
+
+		if (currentEnergy == 0) {
+			
+			$("#energy").css("background-image", "url(imgs/energia0.png)");
+			
+			//Game Over
+			gameOver();
+		}
+
+	} // End of energy() function
+
+	
+	// GAME OVER function
+	function gameOver() {
+
+		EndOfTheGame = true;
+		music.pause();
+		soundGameOver.play();
+		
+		window.clearInterval(game.timer);
+		game.timer = null;
+		
+		$("#player").remove();
+		$("#enemy1").remove();
+		$("#enemy2").remove();
+		$("#friend").remove();
+		
+		$("#game-background").append("<div id='end'></div>");
+		
+		$("#end").html("<h1> Game Over </h1><p>Your score was: " + points + "</p>" + "<div id='restart' onClick=restartGame()><h3>Play Again</h3></div>");
+	} // End of gameOver() function
 	
 } // End of start function
+
+
+
+// Restart the game
+		
+function restartGame() {
+	soundGameOver.pause();
+	$("#end").remove();
+	start();
+	
+} // End of restartGame() function
+
+
 
 
